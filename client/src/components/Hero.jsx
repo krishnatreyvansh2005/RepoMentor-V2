@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import {
   ArrowRight,
   CheckCircle2,
@@ -17,6 +18,9 @@ function Hero() {
   const [githubUrl, setGithubUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const API_BASE_URL =
+    import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   const handleAnalyze = async () => {
     setError("");
@@ -38,7 +42,7 @@ function Hero() {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/analyze",
+        `${API_BASE_URL}/api/analyze`,
         {
           method: "POST",
           headers: {
@@ -86,7 +90,6 @@ function Hero() {
 
   return (
     <section className="hero">
-
       <div className="hero-glow glow-one"></div>
       <div className="hero-glow glow-two"></div>
 
@@ -161,6 +164,7 @@ function Hero() {
           </p>
 
           <div className="hero-checks">
+
             <div>
               <CheckCircle2 size={17} />
               No complex setup
@@ -175,8 +179,8 @@ function Hero() {
               <CheckCircle2 size={17} />
               Interview ready
             </div>
-          </div>
 
+          </div>
         </div>
 
         {/* RIGHT */}
@@ -185,6 +189,7 @@ function Hero() {
           <div className="code-window">
 
             <div className="window-header">
+
               <div className="window-dots">
                 <span></span>
                 <span></span>
@@ -197,6 +202,7 @@ function Hero() {
                 <CheckCircle2 size={13} />
                 Analyzed
               </div>
+
             </div>
 
             <div className="code-body">
@@ -248,11 +254,11 @@ function Hero() {
               </div>
 
             </div>
-
           </div>
 
           <div className="floating-card card-tech">
             <Code2 size={19} />
+
             <div>
               <strong>Tech Stack</strong>
               <small>8 Technologies</small>
@@ -261,6 +267,7 @@ function Hero() {
 
           <div className="floating-card card-structure">
             <Boxes size={19} />
+
             <div>
               <strong>Structure</strong>
               <small>52 Files analyzed</small>
@@ -269,6 +276,7 @@ function Hero() {
 
           <div className="floating-card card-ai">
             <Sparkles size={19} />
+
             <div>
               <strong>AI Insights</strong>
               <small>24 Suggestions</small>
@@ -277,6 +285,7 @@ function Hero() {
 
           <div className="floating-card card-db">
             <Database size={19} />
+
             <div>
               <strong>Database</strong>
               <small>MongoDB detected</small>
@@ -289,7 +298,6 @@ function Hero() {
           </div>
 
         </div>
-
       </div>
 
       {/* FEATURE STRIP */}
@@ -340,7 +348,6 @@ function Hero() {
         </div>
 
       </div>
-
     </section>
   );
 }
