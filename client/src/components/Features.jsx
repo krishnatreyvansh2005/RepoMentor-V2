@@ -43,30 +43,27 @@ const features = [
 function Features() {
   return (
     <section className="features-section" id="features">
-
-      <div className="section-heading">
+      <div className="section-heading features-heading">
         <span>POWERFUL FEATURES</span>
 
-        <h2>
+        <h1>
           Everything you need to
           <br />
           <strong>understand your project.</strong>
-        </h2>
+        </h1>
 
         <p>
-          RepoMentor turns your GitHub repository into a complete
-          project guide designed especially for developers and freshers.
+          RepoMentor turns your GitHub repository into a complete project
+          guide designed especially for developers and freshers.
         </p>
       </div>
 
       <div className="features-grid">
-
         {features.map((feature, index) => {
           const Icon = feature.icon;
 
           return (
             <div className="feature-card" key={index}>
-
               <div className="feature-card-icon">
                 <Icon size={24} />
               </div>
@@ -78,13 +75,10 @@ function Features() {
               <div className="feature-number">
                 0{index + 1}
               </div>
-
             </div>
           );
         })}
-
       </div>
-
     </section>
   );
 }

@@ -14,6 +14,10 @@ import {
 
 import "./Assistant.css";
 
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5000";
+
 function Assistant() {
   const navigate = useNavigate();
 
@@ -77,7 +81,7 @@ function Assistant() {
       setLoading(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/assistant",
+        `${API_URL}/api/assistant`,
         {
           method: "POST",
           headers: {
@@ -219,6 +223,7 @@ function Assistant() {
                   disabled={loading}
                 >
                   <span>{item}</span>
+
                   <ArrowLeft
                     size={15}
                     style={{

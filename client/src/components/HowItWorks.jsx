@@ -24,27 +24,28 @@ const steps = [
 function HowItWorks() {
   return (
     <section className="how-section" id="how-it-works">
-
-      <div className="section-heading">
+      <div className="section-heading how-heading">
         <span>HOW IT WORKS</span>
 
-        <h2>
+        <h1>
           From GitHub link to
           <br />
           <strong>interview ready.</strong>
-        </h2>
+        </h1>
+
+        <p>
+          RepoMentor analyzes your GitHub project, explains how it works,
+          and helps you prepare for project-based interview questions.
+        </p>
       </div>
 
       <div className="steps-container">
-
         {steps.map((step, index) => {
           const Icon = step.icon;
 
           return (
             <div className="step-wrapper" key={step.number}>
-
               <div className="step-card">
-
                 <div className="step-top">
                   <span>{step.number}</span>
 
@@ -56,19 +57,15 @@ function HowItWorks() {
                 <h3>{step.title}</h3>
 
                 <p>{step.text}</p>
-
               </div>
 
               {index !== steps.length - 1 && (
                 <ArrowRight className="step-arrow" />
               )}
-
             </div>
           );
         })}
-
       </div>
-
     </section>
   );
 }

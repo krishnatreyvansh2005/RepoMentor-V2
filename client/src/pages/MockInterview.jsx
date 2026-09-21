@@ -18,6 +18,10 @@ import {
 
 import "./MockInterview.css";
 
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5000";
+
 function MockInterview() {
   const navigate = useNavigate();
 
@@ -33,7 +37,6 @@ function MockInterview() {
   const [questionNumber, setQuestionNumber] =
     useState(1);
 
-  // Speaking states
   const [isListening, setIsListening] =
     useState(false);
 
@@ -45,8 +48,6 @@ function MockInterview() {
 
   const recognitionRef = useRef(null);
   const timerRef = useRef(null);
-
-  // Prevent duplicate transcript updates
   const finalTranscriptRef = useRef("");
 
   useEffect(() => {
@@ -72,12 +73,6 @@ function MockInterview() {
       navigate("/");
     }
   }, [navigate]);
-
-  /*
-   * -----------------------------------------
-   * SPEECH RECOGNITION SETUP
-   * -----------------------------------------
-   */
 
   useEffect(() => {
     const SpeechRecognition =
@@ -195,12 +190,6 @@ function MockInterview() {
     };
   }, []);
 
-  /*
-   * -----------------------------------------
-   * SPEAKING TIMER
-   * -----------------------------------------
-   */
-
   useEffect(() => {
     if (isListening) {
       timerRef.current = setInterval(() => {
@@ -223,12 +212,6 @@ function MockInterview() {
     };
   }, [isListening]);
 
-  /*
-   * -----------------------------------------
-   * FORMAT SPEAKING TIME
-   * -----------------------------------------
-   */
-
   const formatTime = (seconds) => {
     const minutes = Math.floor(
       seconds / 60
@@ -244,12 +227,6 @@ function MockInterview() {
       "0"
     )}`;
   };
-
-  /*
-   * -----------------------------------------
-   * START SPEAKING
-   * -----------------------------------------
-   */
 
   const startSpeaking = () => {
     if (!speechSupported) {
@@ -289,12 +266,6 @@ function MockInterview() {
     }
   };
 
-  /*
-   * -----------------------------------------
-   * STOP SPEAKING
-   * -----------------------------------------
-   */
-
   const stopSpeaking = () => {
     if (!recognitionRef.current) {
       return;
@@ -311,12 +282,6 @@ function MockInterview() {
 
     setIsListening(false);
   };
-
-  /*
-   * -----------------------------------------
-   * START MOCK INTERVIEW
-   * -----------------------------------------
-   */
 
   const startInterview = async () => {
     if (!projectData || starting) {
@@ -335,7 +300,7 @@ function MockInterview() {
       setStarting(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/mock-interview/start",
+        `${API_URL}/api/mock-interview/start`,
         {
           method: "POST",
           headers: {
@@ -376,12 +341,6 @@ function MockInterview() {
     }
   };
 
-  /*
-   * -----------------------------------------
-   * SUBMIT ANSWER
-   * -----------------------------------------
-   */
-
   const submitAnswer = async () => {
     if (
       !projectData ||
@@ -392,7 +351,6 @@ function MockInterview() {
       return;
     }
 
-    // Stop microphone before submitting
     if (isListening) {
       stopSpeaking();
     }
@@ -403,7 +361,7 @@ function MockInterview() {
       setEvaluating(true);
 
       const response = await fetch(
-        "http://localhost:5000/api/mock-interview/evaluate",
+        `${API_URL}/api/mock-interview/evaluate`,
         {
           method: "POST",
           headers: {
@@ -448,12 +406,6 @@ function MockInterview() {
     }
   };
 
-  /*
-   * -----------------------------------------
-   * NEXT QUESTION
-   * -----------------------------------------
-   */
-
   const nextQuestion = async () => {
     if (isListening) {
       stopSpeaking();
@@ -473,12 +425,6 @@ function MockInterview() {
     await startInterview();
   };
 
-  /*
-   * -----------------------------------------
-   * RESET INTERVIEW
-   * -----------------------------------------
-   */
-
   const resetInterview = () => {
     if (isListening) {
       stopSpeaking();
@@ -493,12 +439,6 @@ function MockInterview() {
 
     finalTranscriptRef.current = "";
   };
-
-  /*
-   * -----------------------------------------
-   * HANDLE MANUAL TEXT EDIT
-   * -----------------------------------------
-   */
 
   const handleAnswerChange = (
     event
@@ -521,10 +461,6 @@ function MockInterview() {
 
   return (
     <div className="mock-interview-page">
-      {/* ---------------------------------- */}
-      {/* NAVBAR */}
-      {/* ---------------------------------- */}
-
       <header className="mock-navbar">
         <div
           className="mock-brand"
@@ -549,10 +485,6 @@ function MockInterview() {
       </header>
 
       <main className="mock-container">
-        {/* ---------------------------------- */}
-        {/* HEADER */}
-        {/* ---------------------------------- */}
-
         <section className="mock-header">
           <div className="mock-header-icon">
             <Brain size={30} />
@@ -579,10 +511,6 @@ function MockInterview() {
           </div>
         </section>
 
-        {/* ---------------------------------- */}
-        {/* PROGRESS */}
-        {/* ---------------------------------- */}
-
         <section className="mock-progress-card">
           <div className="progress-left">
             <div className="progress-icon">
@@ -604,32 +532,19 @@ function MockInterview() {
 
           <div className="progress-indicator">
             <span className="progress-dot active"></span>
-
             <span className="progress-line"></span>
-
             <span className="progress-dot"></span>
-
             <span className="progress-line"></span>
-
             <span className="progress-dot"></span>
           </div>
         </section>
 
-        {/* ---------------------------------- */}
-        {/* ERROR */}
-        {/* ---------------------------------- */}
-
         {error && (
           <div className="mock-error">
             <XCircle size={18} />
-
             <span>{error}</span>
           </div>
         )}
-
-        {/* ---------------------------------- */}
-        {/* START SCREEN */}
-        {/* ---------------------------------- */}
 
         {!question &&
           !starting && (
@@ -686,19 +601,13 @@ function MockInterview() {
                 }
               >
                 <Sparkles size={18} />
-
                 Start Mock Interview
-
                 <ChevronRight
                   size={18}
                 />
               </button>
             </section>
           )}
-
-        {/* ---------------------------------- */}
-        {/* QUESTION LOADING */}
-        {/* ---------------------------------- */}
 
         {starting && (
           <section className="mock-loading-card">
@@ -725,10 +634,6 @@ function MockInterview() {
           </section>
         )}
 
-        {/* ---------------------------------- */}
-        {/* QUESTION + SPEAKING */}
-        {/* ---------------------------------- */}
-
         {question &&
           !evaluation && (
             <section className="question-card">
@@ -748,7 +653,6 @@ function MockInterview() {
                 </div>
               </div>
 
-              {/* QUESTION */}
               <div className="question-content">
                 <MessageCircle
                   size={21}
@@ -759,7 +663,6 @@ function MockInterview() {
                 </h2>
               </div>
 
-              {/* ANSWER */}
               <div className="answer-section">
                 <div className="answer-label-row">
                   <label htmlFor="answer">
@@ -781,10 +684,6 @@ function MockInterview() {
                   maxLength={3000}
                   disabled={evaluating}
                 />
-
-                {/* -------------------------------- */}
-                {/* SPEAKING CONTROLS */}
-                {/* -------------------------------- */}
 
                 <div className="speaking-panel">
                   <div className="speaking-info">
@@ -822,10 +721,7 @@ function MockInterview() {
                           !speechSupported
                         }
                       >
-                        <Mic
-                          size={20}
-                        />
-
+                        <Mic size={20} />
                         Start Speaking
                       </button>
                     ) : (
@@ -836,10 +732,7 @@ function MockInterview() {
                           stopSpeaking
                         }
                       >
-                        <MicOff
-                          size={20}
-                        />
-
+                        <MicOff size={20} />
                         Stop Speaking
                       </button>
                     )}
@@ -889,7 +782,6 @@ function MockInterview() {
                   )}
                 </div>
 
-                {/* HINT */}
                 <div className="answer-hint">
                   <Sparkles size={15} />
 
@@ -899,7 +791,6 @@ function MockInterview() {
                 </div>
               </div>
 
-              {/* SUBMIT */}
               <button
                 className="submit-answer-button"
                 onClick={
@@ -914,13 +805,11 @@ function MockInterview() {
                 {evaluating ? (
                   <>
                     Evaluating
-
                     <span className="button-spinner"></span>
                   </>
                 ) : (
                   <>
                     Submit Answer
-
                     <Send size={17} />
                   </>
                 )}
@@ -934,10 +823,6 @@ function MockInterview() {
               )}
             </section>
           )}
-
-        {/* ---------------------------------- */}
-        {/* EVALUATION LOADING */}
-        {/* ---------------------------------- */}
 
         {evaluating && (
           <section className="evaluation-loading">
@@ -956,10 +841,6 @@ function MockInterview() {
             </p>
           </section>
         )}
-
-        {/* ---------------------------------- */}
-        {/* EVALUATION */}
-        {/* ---------------------------------- */}
 
         {evaluation && (
           <section className="evaluation-section">
@@ -980,7 +861,6 @@ function MockInterview() {
 
                 <strong>
                   {evaluation.score}
-
                   <small>/10</small>
                 </strong>
 
@@ -990,11 +870,9 @@ function MockInterview() {
               </div>
             </div>
 
-            {/* OVERALL FEEDBACK */}
             <div className="feedback-card">
               <div className="feedback-title">
                 <Sparkles size={18} />
-
                 Overall Feedback
               </div>
 
@@ -1005,7 +883,6 @@ function MockInterview() {
               </p>
             </div>
 
-            {/* WHAT WAS GOOD */}
             {Array.isArray(
               evaluation.whatWasGood
             ) &&
@@ -1016,7 +893,6 @@ function MockInterview() {
                     <CheckCircle2
                       size={18}
                     />
-
                     What You Did Well
                   </div>
 
@@ -1037,7 +913,6 @@ function MockInterview() {
                 </div>
               )}
 
-            {/* WHAT CAN IMPROVE */}
             {Array.isArray(
               evaluation.whatCanImprove
             ) &&
@@ -1046,9 +921,7 @@ function MockInterview() {
                 <div className="feedback-card improve-card">
                   <div className="feedback-title">
                     <Target size={18} />
-
-                    What You Can
-                    Improve
+                    What You Can Improve
                   </div>
 
                   <ul>
@@ -1068,15 +941,12 @@ function MockInterview() {
                 </div>
               )}
 
-            {/* BETTER ANSWER */}
             <div className="better-answer-card">
               <div className="better-answer-title">
                 <MessageCircle
                   size={18}
                 />
-
-                Better Interview
-                Answer
+                Better Interview Answer
               </div>
 
               <p>
@@ -1086,13 +956,11 @@ function MockInterview() {
               </p>
             </div>
 
-            {/* FOLLOW UP */}
             {evaluation.followUpQuestion && (
               <div className="follow-up-card">
                 <span>
                   FOLLOW-UP QUESTION
                 </span>
-
                 <h3>
                   {
                     evaluation.followUpQuestion
@@ -1101,7 +969,6 @@ function MockInterview() {
               </div>
             )}
 
-            {/* ACTIONS */}
             <div className="evaluation-actions">
               <button
                 className="secondary-interview-button"
@@ -1112,7 +979,6 @@ function MockInterview() {
                 <RotateCcw
                   size={17}
                 />
-
                 Restart
               </button>
 
@@ -1123,7 +989,6 @@ function MockInterview() {
                 }
               >
                 Next Question
-
                 <ChevronRight
                   size={18}
                 />
