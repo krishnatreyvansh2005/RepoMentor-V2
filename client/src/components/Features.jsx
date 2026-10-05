@@ -1,83 +1,62 @@
 import {
-  BrainCircuit,
-  Code2,
-  FolderTree,
-  Database,
-  Library,
+  Brain,
   MessageSquareCode,
+  BarChart3,
 } from "lucide-react";
 
 const features = [
   {
-    icon: BrainCircuit,
+    icon: Brain,
     title: "AI Project Analysis",
-    text: "Get a complete understanding of what your project does and how it works.",
-  },
-  {
-    icon: Code2,
-    title: "Tech Stack Detection",
-    text: "Automatically identify frameworks, languages, tools and technologies.",
-  },
-  {
-    icon: FolderTree,
-    title: "Project Structure",
-    text: "Understand every important folder and file inside your repository.",
-  },
-  {
-    icon: Database,
-    title: "API & Database",
-    text: "Discover API endpoints, database models and how your backend works.",
-  },
-  {
-    icon: Library,
-    title: "Libraries & Dependencies",
-    text: "Know which packages you used and why they are important.",
+    description:
+      "Understand your project's purpose, architecture, tech stack, and how the different parts work together.",
   },
   {
     icon: MessageSquareCode,
     title: "Interview Preparation",
-    text: "Generate project-specific questions and practice with an AI interviewer.",
+    description:
+      "Get project-specific interview questions and learn how to confidently explain your implementation.",
+  },
+  {
+    icon: BarChart3,
+    title: "Project Insights",
+    description:
+      "Turn your repository into clear insights about technologies, structure, important files, and project flow.",
   },
 ];
 
 function Features() {
   return (
-    <section className="features-section" id="features">
-      <div className="section-heading features-heading">
-        <span>POWERFUL FEATURES</span>
+    <section className="features" id="features">
+      <div className="features-container">
+        <div className="section-heading">
+          <span className="section-label">WHY REPOMENTOR</span>
+          <h2>Everything you need to understand your project.</h2>
+          <p>
+            Stop memorizing your code before interviews. Understand it,
+            explain it, and be ready to discuss it.
+          </p>
+        </div>
 
-        <h1>
-          Everything you need to
-          <br />
-          <strong>understand your project.</strong>
-        </h1>
+        <div className="features-grid">
+          {features.map((feature) => {
+            const Icon = feature.icon;
 
-        <p>
-          RepoMentor turns your GitHub repository into a complete project
-          guide designed especially for developers and freshers.
-        </p>
-      </div>
+            return (
+              <article className="feature-card" key={feature.title}>
+                <div className="feature-icon">
+                  <Icon size={22} />
+                </div>
 
-      <div className="features-grid">
-        {features.map((feature, index) => {
-          const Icon = feature.icon;
+                <h3>{feature.title}</h3>
 
-          return (
-            <div className="feature-card" key={index}>
-              <div className="feature-card-icon">
-                <Icon size={24} />
-              </div>
+                <p>{feature.description}</p>
 
-              <h3>{feature.title}</h3>
-
-              <p>{feature.text}</p>
-
-              <div className="feature-number">
-                0{index + 1}
-              </div>
-            </div>
-          );
-        })}
+                <span className="feature-arrow">→</span>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

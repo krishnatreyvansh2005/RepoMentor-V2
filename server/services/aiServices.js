@@ -70,8 +70,7 @@ async function generateWithModel(model, prompt) {
             const waitTime = 2000 * Math.pow(2, attempt - 1);
 
             console.log(
-                `Gemini temporarily unavailable. Retrying in ${
-                    waitTime / 1000
+                `Gemini temporarily unavailable. Retrying in ${waitTime / 1000
                 } seconds...`
             );
 
@@ -181,7 +180,13 @@ ${JSON.stringify(projectData, null, 2)}
     const output = await generateAIResponse(prompt);
 
     try {
-        return JSON.parse(output);
+        const cleanedOutput = output
+            .replace(/^```json\s*/i, "")
+            .replace(/^```\s*/i, "")
+            .replace(/\s*```$/i, "")
+            .trim();
+
+        return JSON.parse(cleanedOutput);
     } catch (error) {
         console.error(
             "Invalid JSON returned by Gemini:",
