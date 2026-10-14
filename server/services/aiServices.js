@@ -47,9 +47,7 @@ async function generateWithModel(model, prompt) {
             const output = response.text;
 
             if (!output) {
-                throw new Error(
-                    "Gemini returned an empty response"
-                );
+                throw new Error("Gemini returned an empty response");
             }
 
             return output;
@@ -63,15 +61,26 @@ async function generateWithModel(model, prompt) {
                 throw error;
             }
 
-            if (attempt === maxRetries) {
+            const errorMessage = error?.message || "";
+
+            const shouldSwitchModel =
+                errorMessage.includes("503") ||
+                errorMessage.includes("UNAVAILABLE") ||
+                errorMessage.includes("high demand") ||
+                errorMessage.includes("429") ||
+                errorMessage.includes("RESOURCE_EXHAUSTED");
+
+            // Switch to the next model immediately for capacity
+            // or rate-limit errors instead of retrying this model.
+            if (shouldSwitchModel || attempt === maxRetries) {
                 throw error;
             }
 
-            const waitTime = 2000 * Math.pow(2, attempt - 1);
+            // Retry other temporary errors with exponential backoff.
+            const waitTime = 1000 * Math.pow(2, attempt - 1);
 
             console.log(
-                `Gemini temporarily unavailable. Retrying in ${waitTime / 1000
-                } seconds...`
+                `Temporary Gemini error. Retrying in ${waitTime / 1000} seconds...`
             );
 
             await sleep(waitTime);
@@ -82,7 +91,10 @@ async function generateWithModel(model, prompt) {
 async function generateAIResponse(prompt) {
     let lastError = null;
 
-    for (const model of models) {
+    // Remove duplicate model names while preserving their order.
+    const uniqueModels = [...new Set(models)];
+
+    for (const model of uniqueModels) {
         try {
             const response = await generateWithModel(
                 model,
@@ -107,7 +119,7 @@ async function generateAIResponse(prompt) {
             }
 
             console.log(
-                `Trying next Gemini model: ${model}`
+                `Trying next Gemini model after failure: ${model}`
             );
         }
     }
