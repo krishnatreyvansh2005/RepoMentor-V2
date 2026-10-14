@@ -14,23 +14,12 @@
   inset: 0;
 
   background-image:
-    linear-gradient(
-      rgba(56, 189, 248, 0.035) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(56, 189, 248, 0.035) 1px,
-      transparent 1px
-    );
+    linear-gradient(rgba(56, 189, 248, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.035) 1px, transparent 1px);
 
   background-size: 48px 48px;
 
-  mask-image: linear-gradient(
-    to bottom,
-    black 0%,
-    transparent 75%
-  );
+  mask-image: linear-gradient(to bottom, black 0%, transparent 75%);
 
   pointer-events: none;
 }
@@ -95,11 +84,7 @@
 .hero h1 span {
   display: block;
 
-  background: linear-gradient(
-    90deg,
-    #38bdf8,
-    #818cf8
-  );
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
 
   -webkit-background-clip: text;
   background-clip: text;
@@ -625,10 +610,19 @@ nav.navbar {
   margin-right: 30px !important;
 }
 
-.navbar .nav-links > a {
+.navbar .nav-links > a,
+.navbar .nav-links > button {
   color: #94a3b8 !important;
   font-size: 14px !important;
   font-weight: 500 !important;
+}
+
+.navbar .nav-links > button {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .navbar .nav-actions {
@@ -648,6 +642,20 @@ nav.navbar {
   border-radius: 8px !important;
 }
 
+.navbar button.primary-btn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.navbar button.primary-btn:hover {
+  opacity: 0.9;
+}
+
 /* Hide mobile-only buttons on desktop */
 .navbar .mobile-buttons {
   display: none !important;
@@ -659,7 +667,6 @@ nav.navbar {
 
 /* Mobile */
 @media (max-width: 800px) {
-
   .navbar .nav-links {
     display: none !important;
   }
@@ -809,7 +816,9 @@ nav.navbar {
   bottom: 24px;
   color: var(--text-muted);
   font-size: 20px;
-  transition: color 0.2s, transform 0.2s;
+  transition:
+    color 0.2s,
+    transform 0.2s;
 }
 
 .feature-card:hover .feature-arrow {
@@ -837,7 +846,9 @@ nav.navbar {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 16px;
-  transition: transform 0.25s ease, border-color 0.25s ease;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
 }
 
 .step:hover {

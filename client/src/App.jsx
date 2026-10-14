@@ -1,9 +1,10 @@
 import {
   BrowserRouter,
   Routes,
-  Route,
+  Route, useLocation,
 } from "react-router-dom";
 
+import { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Features from "./components/Features";
@@ -15,6 +16,20 @@ import Assistant from "./pages/Assistant";
 import MockInterview from "./pages/MockInterview";
 
 function HomePage() {
+  const location = useLocation();
+
+  useEffect(() => {
+    const sectionId = location.state?.scrollTo;
+
+    if (!sectionId) return;
+
+    requestAnimationFrame(() => {
+      document.getElementById(sectionId)?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    });
+  }, [location.key, location.state]);
   return (
     <>
       <Navbar />

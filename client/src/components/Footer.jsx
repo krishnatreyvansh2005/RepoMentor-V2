@@ -2,7 +2,7 @@ import { Code2, GitBranch, BriefcaseBusiness, MessageCircle } from "lucide-react
 
 function Footer() {
   return (
-    <footer className="footer" id="about">
+    <footer className="footer">
 
       <div className="footer-container">
 
